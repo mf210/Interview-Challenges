@@ -1,0 +1,2 @@
+stripe listen --forward-to=localhost:8000/events/
+stripe trigger customer.created

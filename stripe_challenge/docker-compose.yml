@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    command: >
+      bash -c "
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/stripe_challenge
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - db
+      
+  stripe:
+    image: stripe/stripe-cli:latest
+    command: >
+      bash -c "
+      stripe login --api-key $$STRIPE_API_KEY &&
+      stripe listen --forward-to web:8000/events"
+    environment:
+      - STRIPE_API_KEY=${STRIPE_API_KEY}
+
+  db:
+    image: postgres:14
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+
+volumes:
+  postgres_data:

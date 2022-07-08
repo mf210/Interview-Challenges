@@ -1,0 +1,26 @@
+{% extends '_base.html' %}
+
+
+{% block content %}
+    <h1>Create product</h1>
+
+    <form class="row g-3 justify-content-center" method="post">
+        {% csrf_token %}
+        <!-- product name input -->
+        <div class="col-3">
+          <label class="form-label" for="id_name">Name:</label>
+          <input type="text" name="name" maxlength="200" class="form-control" required id="id_name">
+        </div>
+        <!-- product description input -->
+        <div class="col-8">
+          <label class="form-label" for="id_description">Description:</label>
+          <input type="text" name="description" maxlength="500" class="form-control" required id="id_description">
+        </div>
+        <!-- submit button -->
+        <div class="col-1 align-self-end">
+            <button class="btn btn-success" id="id_submit" type="submit">Create</button>
+        </div>
+        <!-- Error messages -->
+        
+    </form>
+{% endblock %}
